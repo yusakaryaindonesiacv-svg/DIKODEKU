@@ -389,14 +389,16 @@ export async function createServer() {
     } catch (e) {
       console.warn("[Vite] Could not initialize Vite middleware:", e);
     }
-  } else if (!process.env.VERCEL) {
-    // Only handle static files if NOT on Vercel (Vercel handles them via rewrites)
+  } else {
+    // Di Vercel atau Production, handle static files agar SPA routing (seperti /auth/callback) tidak 404
     const distPath = path.join(process.cwd(), "dist");
     if (fs.existsSync(distPath)) {
       app.use(express.static(distPath));
       app.get("*", (req, res) => {
         res.sendFile(path.join(distPath, "index.html"));
       });
+    } else {
+      console.warn("[Server] Folder 'dist' tidak ditemukan. Pastikan 'npm run build' sudah dijalankan.");
     }
   }
 
