@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-background: #020203;
+  --color-foreground: #ffffff;
+  
+  --color-primary: #00ff7f; /* Vibrant Spring Green */
+  --color-primary-foreground: #020203;
+
+  --color-muted: #111114;
+  --color-muted-foreground: #9ca3af;
+
+  --color-accent: #3b82f6; /* Blue touch */
+  --color-accent-foreground: #ffffff;
+
+  --color-card: #0a0a0c;
+  --color-card-foreground: #ffffff;
+
+  --color-border: #1a1a1b;
+  --color-input: #111114;
+  --color-ring: #00ff7f;
+
+  --radius-lg: 1rem;
+  --radius-md: 0.75rem;
+  --radius-sm: 0.5rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+  --radius-3xl: 2.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(0, 255, 127, 0.04) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.03) 0px, transparent 50%);
+  }
+  
+  h1, h2, h3, h4, .font-tech {
+    @apply font-mono tracking-tighter;
+  }
+}
+
+.bento-card {
+  @apply bg-card border border-border rounded-3xl p-6 transition-all duration-300;
+}
+
+.bento-card:hover {
+  @apply border-primary/30 bg-card/80;
+}
+
+.code-card {
+  @apply bg-card border border-border rounded-3xl transition-all duration-300 p-0 overflow-hidden;
+}
+
+.glass-header {
+  @apply bg-card/60 backdrop-blur-xl border border-border rounded-2xl;
+}
+
+@import "tw-animate-css";

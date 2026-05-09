@@ -1,0 +1,21 @@
+{
+  "name": "DIKODEKU Store",
+  "short_name": "DIKODEKU",
+  "description": "Source Code & Digital Products Store",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#09090b",
+  "icons": [
+    {
+      "src": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=192&h=192&auto=format&fit=crop",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=512&h=512&auto=format&fit=crop",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
