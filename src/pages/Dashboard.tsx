@@ -190,12 +190,7 @@ export default function Dashboard() {
                            <TableRow key={tx.id} className="border-border hover:bg-muted/20">
                               <TableCell className="font-mono text-xs">{tx.order_id}</TableCell>
                               <TableCell>
-                                <div className="flex items-center gap-3">
-                                   <div className="h-10 w-10 rounded border border-border overflow-hidden shrink-0">
-                                      <img src={tx.products?.thumbnail_url || undefined} className="h-full w-full object-cover" />
-                                   </div>
-                                   <span className="text-sm font-medium line-clamp-1">{tx.products?.name}</span>
-                                </div>
+                                <span className="text-sm font-medium line-clamp-1">{tx.products?.name}</span>
                               </TableCell>
                               <TableCell className="text-xs text-muted-foreground">{new Date(tx.created_at).toLocaleDateString()}</TableCell>
                               <TableCell className="font-tech text-sm">Rp {tx.amount.toLocaleString('id-ID')}</TableCell>
