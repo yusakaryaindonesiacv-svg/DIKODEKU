@@ -138,26 +138,32 @@ export default function Dashboard() {
             <div className="py-8">
               <TabsContent value="downloads" className="mt-0 space-y-6">
                 {purchasedProducts.length > 0 ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {purchasedProducts.map((p) => (
-                      <Card key={p.id} className="code-card overflow-hidden group">
-                         <div className="aspect-video relative overflow-hidden bg-muted">
-                            <img src={p.thumbnail_url || undefined} alt={p.name} className="h-full w-full object-cover" />
-                            <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                               <Button variant="default" className="gap-2 font-tech" render={<a href={p.download_url} target="_blank" rel="noopener noreferrer" />}>
-                                  <Download className="h-4 w-4" /> DOWNLOAD ZIP
-                               </Button>
-                            </div>
-                         </div>
-                         <CardContent className="p-4 flex flex-col gap-2">
-                             <h4 className="font-bold text-sm line-clamp-1">{p.name}</h4>
-                             <div className="flex items-center justify-between text-[10px] text-muted-foreground font-tech uppercase tracking-widest">
-                                <span>Versi 1.2.0</span>
-                                <Link to={`/product/${p.slug}`} className="hover:text-primary">Lihat Produk</Link>
-                             </div>
-                         </CardContent>
-                      </Card>
-                    ))}
+                  <div className="border border-border rounded-2xl overflow-hidden bg-card/20">
+                    <Table>
+                      <TableHeader className="bg-muted/50">
+                        <TableRow className="hover:bg-transparent border-border">
+                          <TableHead className="font-tech uppercase text-[10px] py-4">Nama Aplikasi</TableHead>
+                          <TableHead className="font-tech uppercase text-[10px] py-4 text-right">Aksi</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {purchasedProducts.map((p) => (
+                          <TableRow key={p.id} className="border-border hover:bg-muted/20">
+                            <TableCell className="font-medium">{p.name}</TableCell>
+                            <TableCell className="text-right">
+                              <div className="flex justify-end gap-2">
+                                <Button variant="ghost" size="sm" className="h-8 font-tech text-[10px]" render={<Link to={`/product/${p.slug}`} />}>
+                                  DETAIL
+                                </Button>
+                                <Button size="sm" className="h-8 font-tech text-[10px] gap-2" render={<a href={p.download_url} target="_blank" rel="noopener noreferrer" />}>
+                                  <Download className="h-3 w-3" /> DOWNLOAD
+                                </Button>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
                   </div>
                 ) : (
                   <div className="py-20 text-center border-2 border-dashed border-border rounded-[3rem] bg-card/10 space-y-4">
