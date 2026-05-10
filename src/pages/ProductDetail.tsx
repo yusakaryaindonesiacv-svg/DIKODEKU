@@ -17,7 +17,8 @@ import {
   ArrowLeft,
   ChevronRight,
   Code,
-  Sparkles
+  Sparkles,
+  Loader2
 } from "lucide-react";
 import { motion } from "motion/react";
 import { toast } from "sonner";
@@ -35,6 +36,7 @@ export default function ProductDetail() {
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState("");
   const [isOwned, setIsOwned] = useState(false);
+  const [claiming, setClaiming] = useState(false);
 
   useEffect(() => {
     async function fetchProduct() {
@@ -70,12 +72,50 @@ export default function ProductDetail() {
     fetchProduct();
   }, [slug, user]);
 
+  const handleClaimFree = async () => {
+    if (!user) {
+      toast.info("Silakan login untuk mendapatkan produk ini.");
+      navigate("/auth");
+      return;
+    }
+
+    setClaiming(true);
+    try {
+      const orderId = `FREE-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+      const { error } = await supabase.from("transactions").insert({
+        user_id: user.id,
+        product_id: product.id,
+        order_id: orderId,
+        amount: 0,
+        status: "completed",
+        payment_method: "free_claim",
+        completed_at: new Date().toISOString()
+      });
+
+      if (error) throw error;
+
+      setIsOwned(true);
+      toast.success("Produk berhasil ditambahkan ke koleksi Anda!");
+    } catch (error: any) {
+      toast.error("Gagal mengambil produk: " + error.message);
+    } finally {
+      setClaiming(false);
+    }
+  };
+
   const handleAddToCart = () => {
     if (!user) {
       toast.info("Silakan login untuk melanjutkan pembelian.");
       navigate("/auth");
       return;
     }
+
+    const price = product.sale_price !== null ? product.sale_price : product.price;
+    if (price === 0) {
+      handleClaimFree();
+      return;
+    }
+
     // Redirect direct to checkout for simplicity in this demo
     navigate(`/checkout/${product.id}`);
   };
@@ -254,8 +294,9 @@ export default function ProductDetail() {
                     </a>
                   </Button>
                 ) : (
-                  <Button className="w-full h-12 md:h-14 text-sm md:text-lg font-tech group" onClick={handleAddToCart}>
-                    BELI SEKARANG <ShoppingCart className="ml-2 h-4 w-4 md:h-5 md:w-5 group-hover:-translate-y-1 transition-transform" />
+                  <Button className="w-full h-12 md:h-14 text-sm md:text-lg font-tech group" onClick={handleAddToCart} disabled={claiming}>
+                    {claiming ? "PROSES..." : (product.sale_price === 0 || (product.sale_price === null && product.price === 0)) ? "AMBIL GRATIS" : "BELI SEKARANG"} 
+                    {claiming ? <Loader2 className="ml-2 h-4 w-4 md:h-5 md:w-5 animate-spin" /> : <ShoppingCart className="ml-2 h-4 w-4 md:h-5 md:w-5 group-hover:-translate-y-1 transition-transform" />}
                   </Button>
                 )}
                 <Button variant="outline" className="w-full h-10 md:h-12 font-tech text-[10px] md:text-xs gap-2">
